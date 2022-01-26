@@ -88,33 +88,20 @@ int main(int argc, char* argv[]) {
             k++;
             i++;
         }
-        //printf("%s \n", patient->person);
-        //printf("%s \n", source->person);
 
         *(source->person+i) = '\0';
 
         fgets(buf, 70, f);
         buf[strlen(buf)-1] = '\0';
-        //printf(" %s | ", first->person);
-        //print()
+
         if(first==NULL) {
-            //printf("line89");
             first=source;
             first = insertSort(first, patient, source);
         }
         else{
-            //printf(" %s | ", first->person);//printf("else");
             first = insertSort(first, patient, source);
         }
-
-
-        
-        //printf("%s %s %s \n", first->person, first->left->person, first->right->person);
-        //node* first = 
-        
         patients++;
-
-        //printf(buf);
         
     } 
 
@@ -123,7 +110,6 @@ int main(int argc, char* argv[]) {
     int flag=0;  
     printTree(first, head, flag);
     fclose(f);
-    freeList(head);
     freeTree(first);
     return 0;
 
@@ -166,26 +152,27 @@ void printTree(node* root, link*head, int flag) {
     printTree(root->right, head, 1);
     if(flag==0) {
         printList(head);
+        freeList(head);
     }
-
+    //freeList(head);
+    //freeTree(root);
 }
 
-void freeList(link* head) {
-    link* tmp;
-    while(head!=NULL) {
-        tmp=head;
-        head=head->next;
-        free(tmp);
+void freeList(link* list) {
+    if(list==NULL) {
+        return;
     }
+    freeList(list->next);
+    free(list);
 }
 
-void freeTree(node* root) {
-    if(root!=NULL) {
-        freeTree(root->right);
-        free(root->person);
-        freeTree(root->left);
-        free(root);
+void freeTree(node* tree) {
+    if(tree==NULL) {
+        return;
     }
+    freeTree(tree->left);
+    freeTree(tree->right);
+    free(tree);
 }
 
 void sortList(link* newLink, link** head) {
@@ -210,6 +197,7 @@ void printList(link* head) {
         printf("%s\n", place->line);
         place = place->next;
     }
+
 }
 
 link* create(char* line) {

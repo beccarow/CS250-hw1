@@ -31,7 +31,7 @@ void freeTree(node* root);
 
 node* insertSort(node * root, node * patient, node * source);
 
-void printTree(node* root, link* head, int flag);
+link* printTree(node* root, link* head, int flag);
 
 int main(int argc, char* argv[]) {
 
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
     
     //printf("%s", buf);
 
-
+    
     while (((strcmp(buf, "DONE") !=0) && strcmp(buf, "DONE\n") !=0) && (strcmp(buf, "DON") !=0))
     {   
         //printf("%d ",patients);
@@ -97,9 +97,11 @@ int main(int argc, char* argv[]) {
         if(first==NULL) {
             first=source;
             first = insertSort(first, patient, source);
+            //printf("first in list");
         }
         else{
             first = insertSort(first, patient, source);
+            //printf("rest of list");
         }
         patients++;
         
@@ -108,7 +110,7 @@ int main(int argc, char* argv[]) {
 
     link* head = NULL;
     int flag=0;  
-    printTree(first, head, flag);
+    head = printTree(first, head, flag);
     fclose(f);
     freeTree(first);
     return 0;
@@ -116,10 +118,10 @@ int main(int argc, char* argv[]) {
 }
 
 
-void printTree(node* root, link*head, int flag) {
+link* printTree(node* root, link*head, int flag) {
     if (root==NULL) {
         //printf("hello");
-        return;
+        return head;
     }
     if (root->left==NULL){
         link* newNode = create(root->person);
@@ -147,15 +149,16 @@ void printTree(node* root, link*head, int flag) {
         sortList(newNode, &head);
 		//printf("%s \n", temp);
 	}
-
-    printTree(root->left, head, 1);
-    printTree(root->right, head, 1);
+    //printf("%s %s\n", head->line, head->next->line);
+    head = printTree(root->left, head, 1);
+    head = printTree(root->right, head, 1);
     if(flag==0) {
         printList(head);
         freeList(head);
     }
     //freeList(head);
     //freeTree(root);
+    return head;
 }
 
 void freeList(link* list) {

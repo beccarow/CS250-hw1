@@ -17,7 +17,7 @@ typedef struct link
     struct link * next;
 }link;
 
-node* finder(node * root, node * source);
+node* finder(node * root, char * source);
 
 link* create(char* line);
 
@@ -214,9 +214,9 @@ link* create(char* line) {
     return newLink;
 }
 
-node* createNode(char* line) {
+node* createNode(char* person) {
     node* newNode = (node*)malloc(sizeof(node));
-    strcpy(newNode->line, line);
+    strcpy(newNode->person, person);
     newNode->left = NULL;
     newNode->right = NULL;
     return newNode;

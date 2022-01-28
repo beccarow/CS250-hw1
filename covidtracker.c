@@ -31,7 +31,7 @@ void freeList(link* head);
 
 void freeTree(node* root);
 
-node* insertSort(node * root, node * patient, node * source);
+node* insertSort(node * root, char * patient, char * source);
 
 link* printTree(node* root, link* head, int flag);
 

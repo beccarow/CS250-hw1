@@ -105,7 +105,7 @@ int main(int argc, char* argv[]) {
         }
         patients++;
 
-        if (strcmp(buf, "DONE\n") ==0) {
+        if (((strcmp(buf, "DONE") ==0) && strcmp(buf, "DONE\n") ==0) && (strcmp(buf, "DON") ==0)) {
             free(patient);
             free(source);
         }

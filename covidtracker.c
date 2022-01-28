@@ -104,7 +104,12 @@ int main(int argc, char* argv[]) {
             //printf("rest of list");
         }
         patients++;
-        
+
+        if (strcmp(buf, "DONE") !=0) {
+            free(patient);
+            free(source);
+        }
+
     } 
 
 

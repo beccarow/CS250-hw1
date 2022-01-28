@@ -117,6 +117,7 @@ int main(int argc, char* argv[]) {
     int flag=0;  
     head = printTree(first, head, flag);
     fclose(f);
+    freeList(head);
     freeTree(first);
     return 0;
 
@@ -159,7 +160,6 @@ link* printTree(node* root, link*head, int flag) {
     head = printTree(root->right, head, 1);
     if(flag==0) {
         printList(head);
-        freeList(head);
     }
     //freeList(head);
     //freeTree(root);

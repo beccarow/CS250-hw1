@@ -21,6 +21,8 @@ node* finder(node * root, node * source);
 
 link* create(char* line);
 
+node* createNode(char* line);
+
 void sortList(link* newLink, link** head);
 
 void printList(link* head);
@@ -70,32 +72,32 @@ int main(int argc, char* argv[]) {
     while (((strcmp(buf, "DONE") !=0) && strcmp(buf, "DONE\n") !=0) && (strcmp(buf, "DON") !=0))
     {   
         //printf("%d ",patients);
-        node* patient = (node*)malloc(sizeof(node));
-        node* source = (node*)malloc(sizeof(node));
+        char* patient = (char*)malloc(31);
+        char* source = (char*)malloc(31);
         int k=0;
 
         while(*(buf+k)!='\0' && *(buf+k)!=' ') {
-            *(patient->person+k) = *(buf+k);
+            *(patient+k) = *(buf+k);
             k++;
         }
-        *(patient->person+k)= '\0';
+        *(patient+k)= '\0';
 
         k++;
         
         int i=0;
         while(*(buf+k)!='\0' && *(buf+k)!='\n') {
-            *(source->person+i) = *(buf+k);
+            *(source+i) = *(buf+k);
             k++;
             i++;
         }
 
-        *(source->person+i) = '\0';
+        *(source+i) = '\0';
 
         fgets(buf, 70, f);
         buf[strlen(buf)-1] = '\0';
 
         if(first==NULL) {
-            first=source;
+            first=createNode(source);
             first = insertSort(first, patient, source);
             //printf("first in list");
         }
@@ -105,10 +107,8 @@ int main(int argc, char* argv[]) {
         }
         patients++;
 
-        if (((strcmp(buf, "DONE") ==0) && strcmp(buf, "DONE\n") ==0) && (strcmp(buf, "DON") ==0)) {
-            free(patient);
-            free(source);
-        }
+        free(patient);
+        free(source);
 
     } 
 
@@ -214,13 +214,21 @@ link* create(char* line) {
     return newLink;
 }
 
-node * insertSort(node * root, node * patient, node * source) {
+node* createNode(char* line) {
+    node* newNode = (node*)malloc(sizeof(node));
+    strcpy(newNode->line, line);
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+node * insertSort(node * root, char * patient, char * source) {
     //printf( " line 148%s %s \n", root->person, source->person);
     node * found = finder(root, source);
 
     if (found == NULL) {
         //printf("line202 \n");
-        root = patient;
+        root = createNode(patient);
         //printf(" line 154 %s \n", root->person);
         return root;
     }
@@ -230,7 +238,7 @@ node * insertSort(node * root, node * patient, node * source) {
     }
 
     else {
-        int flag = strcmp(found->left->person, patient->person);
+        int flag = strcmp(found->left->person, patient);
         if (flag < 0) {
             found->right = insertSort(found->right, patient, source);
         }
@@ -238,7 +246,7 @@ node * insertSort(node * root, node * patient, node * source) {
             node * swap = NULL;
             swap = found->left;
             found->right = swap;
-            found->left = patient;
+            found->left = createNode(patient);
         }
         
     }
@@ -247,12 +255,12 @@ node * insertSort(node * root, node * patient, node * source) {
 
 }
 
-node * finder(node * root, node * source) {
+node * finder(node * root, char * source) {
     node * temp = NULL;
     if (root == NULL) {
         return NULL;
     }
-    if (strcmp(root -> person, source -> person) == 0) {
+    if (strcmp(root -> person, source) == 0) {
         return root;
     }
 
